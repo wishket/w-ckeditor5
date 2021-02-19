@@ -28,13 +28,130 @@
 
 <script src="../build/ckeditor.js"></script>
 <script>
-	InlineEditor.create( document.querySelector( '#editor' ) )
-		.then( editor => {
-			window.editor = editor;
-		} )
-		.catch( error => {
-			console.error( 'There was a problem initializing the editor.', error );
-		} );
+	InlineEditor
+			.create(document.querySelector('#editor'), {
+				toolbar: {
+					viewportTopOffset: 0,
+					items: [
+						'heading',
+						'|',
+						'fontColor',
+						'fontBackgroundColor',
+						'|',
+						'bold',
+						'italic',
+						'underline',
+						'strikethrough',
+						'link',
+						'bulletedList',
+						'numberedList',
+						'|',
+						'alignment',
+						'indent',
+						'outdent',
+						'|',
+						'specialCharacters',
+						'blockQuote',
+						'imageInsert',
+						'mediaEmbed',
+						'insertTable',
+						'|',
+						'removeTag',
+						'undo',
+						'redo',
+						'|',
+						'code',
+						'codeBlock',
+						'|',
+						'horizontalLine',
+						'pageBreak',
+						'|',
+						'htmlEmbed'
+					]
+				},
+				language: 'en',
+				image: {
+					resizeOptions: [
+						{
+							name: 'imageResize:original',
+							value: '100',
+							icon: 'original'
+						},
+						{
+							name: 'imageResize:50',
+							value: '50',
+							icon: 'small'
+						},
+						{
+							name: 'imageResize:60',
+							value: '60',
+							icon: 'medium'
+						},
+						{
+							name: 'imageResize:80',
+							value: '80',
+							icon: 'large'
+						},
+					],
+					toolbar: [
+						'imageTextAlternative',
+						'imageStyle:full',
+						'imageStyle:side',
+						'imageResize:50',
+						'imageResize:60',
+						'imageResize:80',
+						'imageResize:original'
+					]
+				},
+				table: {
+					contentToolbar: [
+						'tableColumn',
+						'tableRow',
+						'mergeTableCells',
+						'tableCellProperties',
+						'tableProperties'
+					]
+				},
+				indentBlock: {
+					offset: 20,
+					unit: 'px'
+				},
+				fontColor: {
+					colors: [
+						{color: '#FFFFFF', label: 'white'},
+						{color: '#292929', label: 'black'},
+						{color: '#757575', label: 'dark gray'},
+						{color: '#999999', label: 'gray'},
+						{color: '#e52929', label: 'red'},
+						{color: '#ff6b21', label: 'orange'},
+						{color: '#ffc61c', label: 'yellow'},
+						{color: '#00a878', label: 'partner'},
+						{color: '#2e6baa', label: 'client'},
+						{color: '#3ba3c7', label: 'wishket'},
+					]
+				},
+				fontBackgroundColor: {
+					colors: [
+						{color: '#FFFFFF', label: 'white'},
+						{color: '#292929', label: 'black'},
+						{color: '#757575', label: 'dark gray'},
+						{color: '#999999', label: 'gray'},
+						{color: '#e52929', label: 'red'},
+						{color: '#ff6b21', label: 'orange'},
+						{color: '#ffc61c', label: 'yellow'},
+						{color: '#00a878', label: 'partner'},
+						{color: '#2e6baa', label: 'client'},
+						{color: '#3ba3c7', label: 'wishket'},
+					]
+				},
+				licenseKey: '',
+			})
+			.then(newEditor => {
+				editor = newEditor;
+			})
+			.catch(error => {
+				console.error(error);
+			});
 </script>
 
 </body>
