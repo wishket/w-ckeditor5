@@ -2,6 +2,8 @@
 import Plugin from '@ckeditor/ckeditor5-core/src/plugin';
 import Command from '@ckeditor/ckeditor5-core/src/command';
 import ButtonView from '@ckeditor/ckeditor5-ui/src/button/buttonview';
+import first from '@ckeditor/ckeditor5-utils/src/first';
+import Paragraph from '@ckeditor/ckeditor5-paragraph/src/paragraph'
 import removeFormatIcon from "../../ckeditor5-remove-format/theme/icons/remove-format.svg";
 
 const REMOVE_TAG = 'removeTag';
@@ -38,25 +40,38 @@ class RemoveTagCommand extends Command {
 	 * @inheritDoc
 	 */
 	execute() {
+		var items = [];
+		var html = '';
+		var body = '';
 		const model = this.editor.model;
 		const schema = model.schema;
-		console.log(model.document.selection)
 		model.change(writer => {
-			for ( const item of this._getFormattingItems( model.document.selection, schema ) ) {
-				if(schema.isBlock( item )) {
-					console.log(item)
+			for ( const curRange of model.document.selection.getRanges() ) {
+				for ( const item of curRange.getItems() ) {
+					if (item.data != 'undefined' && item.data != undefined) {
+						body += item.data;
+					} else if (item.data == undefined) {
+						items.push(body)
+						body = ''
+					}
+
+				}
+				if(body != '' && body != undefined) {
+					items.push(body)
+				}
+				writer.remove(curRange)
+			}
+			for(var i=0; i < items.length; i++) {
+				if (items[i] != undefined && items[i] != 'undefined' && items[i] != '') {
+					html += '<p>' + items[i] + '</p>'
 				}
 			}
+			const viewFragment = this.editor.data.processor.toView(html);
+			const modelFragment = this.editor.data.toModel(viewFragment);
+			this.editor.model.insertContent(modelFragment)
 		})
-	}
 
-	* _getFormattingItems( selection, schema ) {
-		// Check formatting on selected items that are not blocks.
-		for ( const block of selection.getSelectedBlocks() ) {
-			if ( itemHasRemovableFormatting( block ) ) {
-				yield block;
-			}
-		}
+
 	}
 }
 
